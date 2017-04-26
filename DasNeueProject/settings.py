@@ -37,7 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
+    'core.apps.CoreConfig',
+    'posts.apps.PostsConfig',
+    'comments.apps.CommentsConfig'
 ]
+
+AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -48,6 +54,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+LOGIN_URL = 'core:login'
+
+LOGOUT_URL = 'core:logout'
+
+LOGIN_REDIRECT_URL = 'core:index'
+
+LOGOUT_REDIRECT_URL = 'core:index'
 
 ROOT_URLCONF = 'DasNeueProject.urls'
 
@@ -121,3 +135,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = '/home/artem/PycharmProjects/WebProjects/web/media'

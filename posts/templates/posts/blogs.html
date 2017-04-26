@@ -1,0 +1,92 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Блоги - TrashJournal{% endblock %}
+
+{% block extra %}
+    <link rel="stylesheet" href="{% static "posts/сss/blogs.css" %}">
+{% endblock %}
+
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="{% url "core:index" %}">Главная</a></li>
+        <li class="active">Блоги</li>
+    </ol>
+
+    <div class="row">
+
+        <div class="col-md-3 col-sm-10">
+            {% if user.is_authenticated %}
+                {% comment %}<form action="{% url "posts:createblog" %}">{% endcomment %}
+                    <button type="submit" class="btn btn-primary modalopen" data-url="{% url 'posts:createblog' %}" data-toggle="modal" data-target="#editModal">Новый блог</button>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="well col-md-12">
+            <form class="form-inline">
+                <div class="col-md-4">
+                    Сортировать по: {{ sortform.sort|add_class:"form-control" }}
+                </div>
+                <div class="col-md-6">
+                    Поиск: {{ sortform.search|add_class:"form-control" }}
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-default">Подтвердить</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+    <hr align="left" size="2" width="100%"/>
+
+    {% for blog in object_list %}
+        <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-9 col-sm-12">
+                        <div class="blog-heading"><a href="{% url "posts:showBlog" pk=blog.id %}">{{ blog.title }}</a></div>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+
+                        {% if blog.owner == user or request.user.is_staff %}
+                            <div align="right">
+                                <a class="modalopen" href="{% url 'posts:editblog' pk=blog.id %}" data-url="{% url 'posts:editblog' pk=blog.id %}" data-toggle="modal" data-target="#editModal">Редактировать</a>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 col-sm-12">
+                        <span>Ведёт <a href="{% url "core:userinfo" pk=blog.owner.id %}">{{ blog.owner }}</a></span>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <div class="text-nowrap text-right" align="right">Обновлено {{ blog.updated_at.day }}.{{ blog.updated_at.month }}.{{ blog.updated_at.year }} {{ blog.updated_at.hour }}:{{ blog.updated_at.minute }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <article>
+                            <span class="long_text_area">{{ blog.description }}</span>
+                        </article><br>
+                    </div>
+                    <div class="col-md-1 col-lg-1 col-sm-2 col-xs-2">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr align="left" size="2" width="100%"/>
+        </div>
+    {% endfor %}
+
+    <br>
+
+{% endblock %}

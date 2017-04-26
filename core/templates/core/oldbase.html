@@ -1,0 +1,40 @@
+<header>
+        <div class="top_panel" id="bar">
+            <span class="top_panel" id="bar_text">
+                <b style="font-size: 30px">  <a href="{% url "core:index" %}" style="text-decoration: none; color: white">TrashJournal</a></b>
+                {% if user.is_authenticated %}
+                    <span class="logout">Пользователь: {{ user.username }}
+                        <a href="{% url 'core:logout' %}">выйти</a>
+                    </span>
+                {% else %}
+                    <span class="login">
+                        <a href="{% url 'core:login' %}">Войти</a>
+                        <a href="{% url 'core:register' %}">Зарегистрироваться</a>
+                    </span>
+                {% endif  %}
+            </span>
+        </div>
+    </header>
+
+
+<div style="margin-top: 5px; font-size: 18px">
+        <span>
+            <a href="{% url "core:index" %}">Главная</a> - </span>
+        <span>
+            <a href="{% url "posts:showBloglist" %}">Блоги</a> -
+        </span>
+        <span>
+            <a href="{% url "posts:showBlog" pk=post.blog.id %}">{{ post.blog.title }}</a> -
+        </span>
+        <span>
+            <a href="{% url "posts:showComments" pk=post.id %}">{{ post.title }}</a> -
+        </span>
+        <span>
+            Редактировать пост</span>
+</div><br>
+
+
+<div class="btn btn-default navbar-btn"></div>
+
+
+<marquee direction="left" style="margin-top: 50%; color: #D9470D; font-size: 70px; font-weight: bolder; line-height: 150%; text-shadow: #000000 0px 1px 1px;">ТЕБЕ ЗДЕСЬ НЕ РАДЫ</marquee>

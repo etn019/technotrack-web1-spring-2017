@@ -1,0 +1,79 @@
+{% load static %}
+<html>
+<head>
+    <meta name="csrf" content="{{ csrf_token }}">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "core/bootstrap/dist/css/bootstrap.css" %}">
+    <link rel="stylesheet" href="{% static "core/css/base.css" %}">
+    <link rel="stylesheet" href="{% static "core/css/button.css" %}">
+    <script src="{% static "core/js/jquery-3.2.0.min.js" %}"></script>
+    <script src="{% static "core/bootstrap/dist/js/bootstrap.js" %}"></script>
+    <script src="{% static "core/js/base.js" %}"></script>
+    {% block extra %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-default navbar-static-top navbar-inverse" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url "core:index" %}">TrashJournal</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{% url "posts:showFeed" %}">Лента</a></li>
+                        <li><a href="{% url "posts:showBloglist" %}">Блоги</a></li>
+
+                        {% if request.user.is_authenticated %}
+                            <li><a href="{% url "core:userinfo" pk=request.user.id %}">{{ request.user.username }}</a></li>
+                            <li><a href="{% url 'core:logout' %}?next={{ request.path }}">Выйти</a></li>
+                        {% else %}
+                            <li><a href="{% url 'core:login' %}?next={{ request.path }}">Войти</a></li>
+                            <li><a href="{% url 'core:register' %}">Зарегистрироваться</a></li>
+                        {% endif %}
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <content>
+    <div class="container content_block">
+        <div class="row">
+            <div class="col-md-10">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    </content>
+
+
+    <editmodal><div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </editmodal>
+
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted text-center">Все права защищены © 2017 TrashTech Ltd.</p>
+            <p class="text-muted text-center"><a href="#">Наверх</a></p>
+        </div>
+    </footer>
+</body>
+</html>

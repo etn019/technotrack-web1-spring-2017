@@ -1,0 +1,125 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %} {{ object.title }} - TrashJournal{% endblock %}
+
+{% block extra %}
+    <script src="{% static "posts/js/posts.js" %}"></script>
+    <link rel="stylesheet" href="{% static "posts/сss/blogs.css" %}">
+{% endblock %}
+
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="{% url "core:index" %}">Главная</a></li>
+        <li><a href="{% url "posts:showBloglist" %}">Блоги</a></li>
+        <li class="active">{{ object.title }}</li>
+    </ol>
+
+    <div class="col-md-12">
+    <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-10 col-sm-12">
+                        <div class="blog-heading"><a href="{% url "posts:showBlog" pk=object.id %}">{{ object.title }}</a></div>
+                    </div>
+                    <div class="col-md-2 col-sm-12">
+
+                        {% if object.owner == user or request.user.is_staff %}
+                            <div align="right">
+                                <a class="modalopen" href="{% url 'posts:editblog' pk=object.id %}" data-url="{% url 'posts:editblog' pk=object.id %}" data-toggle="modal" data-target="#editModal">Редактировать</a>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 col-sm-12">
+                        <span>Ведёт <a href="{% url "core:userinfo" pk=object.owner.id %}">{{ object.owner }}</a></span>
+                    </div>
+                    <div class="col-md-3 col-sm-12">
+                        <div class="text-nowrap text-right" align="right">Обновлено {{ object.updated_at.day }}.{{ object.updated_at.month }}.{{ object.updated_at.year }} {{ object.updated_at.hour }}:{{ object.updated_at.minute }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <article>
+                            <span class="long_text_area">{{ object.description }}</span>
+                        </article><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr align="left" size="2" width="100%"/>
+
+    <div class="row">
+
+        <div class="col-md-3 col-sm-10">
+            {% if object.owner == request.user %}
+                    <button type="submit" class="btn btn-primary modalopen" data-url="{% url 'posts:createpost' pk=object.id %}" data-toggle="modal" data-target="#editModal">Новый пост</button>
+                    {% comment %}<button type="submit" class="btn btn-primary">Новый пост</button>{% endcomment %}
+            {% endif %}
+        </div>
+    </div>
+
+    {% if object.post_set.all %}
+        <h2>Посты</h2>
+        {% for post in object.post_set.all %}
+
+
+        <div class="panel panel-default">
+                <div class="panel-heading">
+
+                    <div class="row">
+
+                        <div class="col-md-10 col-sm-12">
+                            <div class="blog-heading">
+                                <a href="{% url "posts:showComments" pk=post.id %}">{{ post.title }}</a>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-12">
+
+                            {% if post.author == user or request.user.is_staff %}
+                                <div align="right">
+                                    <a class="modalopen" href="{% url 'posts:editpost' pk=post.id %}" data-url="{% url 'posts:editpost' pk=post.id %}" data-toggle="modal" data-target="#editModal">Редактировать</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <span>
+                        {{ post.created_at.day }}.{{ post.created_at.month }}.{{ post.created_at.year }} {{ post.created_at.hour }}:{{ post.created_at.minute }}
+                            <a href="{% url "core:userinfo" pk=post.author.id %}">{{ post.author }}</a>
+                        </span>
+                </div>
+                <div class="panel-body">
+                    <article>
+                        <div>
+                            {{ post.text }}
+                        </div>
+                    </article>
+                </div>
+                <div class="panel-footer">
+                    <span class="likecount-{{ post.id }}" data-count="{{ post.liked }}">Оценили: {{ post.liked }}</span>
+                    {% if isLiked %}
+
+                        <button class="btn btn-primary ajaxlike" data-toggle="tooltip" data-placement="right" id="likes-{{ post.id }}" data-url="{% url "posts:post_ajax_like" pk=post.id %}" data-postid="{{ post.id }}">Разонравилось!</button>
+
+                    {% else %}
+
+                        <button class="btn btn-info ajaxlike" id="likes-{{ post.id }}" data-url="{% url "posts:post_ajax_like" pk=post.id %}" data-postid="{{ post.id }} " data-toggle="tooltip" data-placement="right" title="!!!">Мне нравится!
+                        </button>
+
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div>Постов пока нет</div>
+    {% endif %}
+    <br>
+    </div>
+{% endblock %}

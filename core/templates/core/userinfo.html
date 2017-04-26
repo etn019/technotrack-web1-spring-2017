@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Профиль {{ object.username }} - TrashJournal{% endblock %}
+
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="{% url "core:index" %}">Главная</a></li>
+        <li class="active">Информация о пользователе</li>
+    </ol>
+
+    <div class="media">
+        <span class="pull-left">
+            <img class="media-object" src="{{ MEDIA_URL }}/media/{{ object.avatar|default:'avatars/Incognito.png' }}" width="170px">
+        </span>
+        <div class="media-body">
+            <h2 class="media-heading">
+                {{ object.username }}
+            </h2>
+        </div>
+    </div>
+
+
+{% endblock %}

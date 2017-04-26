@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Welcome! - TrashJournal{% endblock %}
+
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li class="active">Главная</li>
+    </ol>
+
+    <h1>Welcome to TrashJournal!</h1><br>
+
+    <div>Уже создано: блогов - {{ blogs }}, постов - {{ posts }}, комментариев - {{ comments }}</div>
+    <div>Присоединяйтесь!</div><br>
+    <div><a href="{% url "posts:showBloglist" %}">Перейти к блогам</a></div><br>
+
+{% endblock %}

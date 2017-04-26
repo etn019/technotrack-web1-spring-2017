@@ -1,0 +1,40 @@
+{% comment %}{% extends 'core/base.html' %}{% endcomment %}
+{% load widget_tweaks %}
+
+{% comment %}
+{% block title %}Новый пост - TrashJournal{% endblock %}
+
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="{% url "core:index" %}">Главная</a></li>
+        <li><a href="{% url "posts:showBloglist" %}">Блоги</a></li>
+        <li><a href="{% url "posts:showBlog" pk=blog.id %}">{{ blog.title }}</a></li>
+        <li class="active">Создать пост</li>
+    </ol>
+
+
+    <form method="post">
+        {% csrf_token %}
+        <div>Заголовок: </div>{{ form.title|add_class:"form-control" }}<br>
+        <div>Текст: </div>
+        {{ form.text|add_class:"form-control" }}<br>
+        <button class="btn btn-default" type="submit">Создать</button>
+    </form>
+{% endblock %}{% endcomment %}
+<form method="post" class="ajaxform" action="{% url 'posts:createpost' pk=blog.id %}">
+    <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Новый пост</h4>
+    </div>
+    <div class="modal-body editblog-form">
+        {% csrf_token %}
+        <div>Заголовок: </div>{{ form.title|add_class:"form-control" }}<br><br>
+        <div>Текст: </div>
+        {{ form.text|add_class:"form-control" }}<br>
+    </div>
+    <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            <button type="submit" class="btn btn-primary">Создать</button>
+    </div>
+</form>

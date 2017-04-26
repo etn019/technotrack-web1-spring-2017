@@ -1,0 +1,42 @@
+{% comment %}{% extends 'core/base.html' %}{% endcomment %}
+{% load widget_tweaks %}
+
+{% comment %}{% block title %}Редактировать пост - TrashJournal{% endblock %}
+
+{% block content %}
+
+    <ol class="breadcrumb">
+        <li><a href="{% url "core:index" %}">Главная</a></li>
+        <li><a href="{% url "posts:showBloglist" %}">Блоги</a></li>
+        <li><a href="{% url "posts:showBlog" pk=post.blog.id %}">{{ post.blog.title }}</a></li>
+        <li><a href="{% url "posts:showComments" pk=post.id %}">{{ post.title }}</a></li>
+        <li class="active">Редактировать пост</li>
+    </ol>
+
+
+
+    <form method="post">
+        {% csrf_token %}
+        <div>Заголовок: </div>{{ form.title|add_class:"form-control" }}<br><br>
+        <div>Текст: </div>
+        {{ form.text|add_class:"form-control" }}<br>
+        <button class="btn btn-default" type="submit">Изменить</button>
+    </form>
+{% endblock %}{% endcomment %}
+
+<form method="post" class="ajaxform" action="{% url 'posts:editpost' pk=post.id %}">
+    <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Редактировать</h4>
+    </div>
+    <div class="modal-body editblog-form">
+        {% csrf_token %}
+        <div>Заголовок: </div>{{ form.title|add_class:"form-control" }}<br><br>
+        <div>Текст: </div>
+        {{ form.text|add_class:"form-control" }}<br>
+    </div>
+    <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            <button type="submit" class="btn btn-primary">Изменить</button>
+    </div>
+</form>

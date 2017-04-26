@@ -1,0 +1,6 @@
+.long_text_area {
+    overflow-wrap: break-word
+}
+.blog-heading {
+  font-size: 20px;
+}

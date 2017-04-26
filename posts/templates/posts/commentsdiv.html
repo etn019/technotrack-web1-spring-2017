@@ -1,0 +1,20 @@
+{% if post.comment_set.all %}
+    <div><b>Комментарии:</b></div><br>
+    {% for comment in post.comment_set.all %}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="panel-title"><a
+                        href="{% url "core:userinfo" pk=comment.author.id %}">{{ comment.author }}</a></span>
+                <span> прокомментировал </span>
+                <span>{{ comment.created_at.day }}.{{ comment.created_at.month }}.{{ comment.created_at.year }} {{ comment.created_at.hour }}:{{ comment.created_at.minute }}:</span>
+            </div>
+            <div class="panel-body long_text_area">
+                {{ comment.text }}
+            </div>
+        </div>
+
+    {% endfor %}
+{% else %}
+    <div>Комментариев пока нет</div>
+{% endif %}
